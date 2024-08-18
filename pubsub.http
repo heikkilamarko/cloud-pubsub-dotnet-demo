@@ -1,0 +1,65 @@
+@pubsub_base_url = http://0.0.0.0:8085/v1/projects/local
+
+GET {{pubsub_base_url}}/topics
+Accept: application/json
+
+###
+
+GET {{pubsub_base_url}}/subscriptions
+Accept: application/json
+
+###
+
+PUT {{pubsub_base_url}}/topics/example1
+Accept: application/json
+
+###
+
+PUT {{pubsub_base_url}}/topics/example2
+Accept: application/json
+
+###
+
+PUT {{pubsub_base_url}}/subscriptions/example1_sub
+Content-Type: application/json
+Accept: application/json
+
+{
+    "topic": "projects/local/topics/example1",
+    "ackDeadlineSeconds": 60,
+    "enableMessageOrdering": false
+}
+
+###
+
+PUT {{pubsub_base_url}}/subscriptions/example2_sub
+Content-Type: application/json
+Accept: application/json
+
+{
+    "topic": "projects/local/topics/example2",
+    "ackDeadlineSeconds": 60,
+    "enableMessageOrdering": false
+}
+
+###
+
+DELETE {{pubsub_base_url}}/subscriptions/example1_sub
+Accept: application/json
+
+###
+
+DELETE {{pubsub_base_url}}/subscriptions/example2_sub
+Accept: application/json
+
+###
+
+DELETE {{pubsub_base_url}}/topics/example1
+Accept: application/json
+
+###
+
+DELETE {{pubsub_base_url}}/topics/example2
+Accept: application/json
+
+###

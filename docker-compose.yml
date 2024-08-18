@@ -1,0 +1,12 @@
+services:
+  pubsub-emulator:
+    image: gcr.io/google.com/cloudsdktool/cloud-sdk:emulators
+    command: |
+      /bin/sh -c "gcloud beta emulators pubsub start --project=local --host-port=0.0.0.0:8085"
+    ports:
+      - "8085:8085"
+    networks:
+      - pubsub
+
+networks:
+  pubsub:
