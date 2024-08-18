@@ -1,6 +1,6 @@
 namespace PubSub;
 
-public record PubsubSubscriptionOptions<TMessageHandler>(
+public record PubsubSubscriptionOptions<T>(
     string Project,
     string Subscription,
     int AckExtensionWindowSeconds = 4,
@@ -10,4 +10,4 @@ public record PubsubSubscriptionOptions<TMessageHandler>(
     long MaxOutstandingByteCount = 10240,
     bool EnableMessageOrdering = false,
     bool IsEmulator = false
-) where TMessageHandler : class, IPubsubMessageHandler;
+);
