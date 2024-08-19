@@ -1,8 +1,8 @@
-namespace PubSub;
+namespace Messaging;
 
-public static class PubSubServiceCollectionExtensions
+public static class PubsubServiceCollectionExtensions
 {
-    public static void AddPubSubSubscription<TMessageHandler>(this IServiceCollection services, PubsubSubscriptionOptions<TMessageHandler> options)
+    public static void AddPubsubSubscription<TMessageHandler>(this IServiceCollection services, PubsubSubscriptionOptions<TMessageHandler> options)
         where TMessageHandler : class, IPubsubMessageHandler
     {
         services.AddSingleton(options);

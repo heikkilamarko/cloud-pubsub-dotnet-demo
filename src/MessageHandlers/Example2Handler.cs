@@ -1,9 +1,9 @@
 using Google.Cloud.PubSub.V1;
-using PubSub;
+using Messaging;
 
-namespace Handlers;
+namespace MessageHandlers;
 
-public class Example1Handler(ILogger<Example1Handler> logger) : IPubsubMessageHandler
+public class Example2Handler(ILogger<Example2Handler> logger) : IPubsubMessageHandler
 {
     public Task<SubscriberClient.Reply> HandleAsync(PubsubMessage message, CancellationToken cancellationToken)
     {

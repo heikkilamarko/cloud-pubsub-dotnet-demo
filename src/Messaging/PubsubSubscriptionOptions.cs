@@ -1,4 +1,4 @@
-namespace PubSub;
+namespace Messaging;
 
 public record PubsubSubscriptionOptions<T>(
     string Project,
