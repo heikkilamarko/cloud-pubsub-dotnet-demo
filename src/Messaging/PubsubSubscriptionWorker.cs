@@ -2,7 +2,7 @@ using Google.Api.Gax;
 using Google.Cloud.PubSub.V1;
 using Grpc.Core;
 
-namespace Messaging;
+namespace Demo.Messaging;
 
 public class PubsubSubscriptionWorker<TMessageHandler>(
     PubsubSubscriptionOptions<TMessageHandler> options,

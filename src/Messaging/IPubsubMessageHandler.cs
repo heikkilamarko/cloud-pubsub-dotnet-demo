@@ -1,6 +1,6 @@
 using Google.Cloud.PubSub.V1;
 
-namespace Messaging;
+namespace Demo.Messaging;
 
 public interface IPubsubMessageHandler
 {

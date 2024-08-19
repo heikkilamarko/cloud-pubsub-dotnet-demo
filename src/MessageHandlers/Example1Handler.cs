@@ -1,7 +1,7 @@
+using Demo.Messaging;
 using Google.Cloud.PubSub.V1;
-using Messaging;
 
-namespace MessageHandlers;
+namespace Demo.MessageHandlers;
 
 public class Example1Handler(ILogger<Example1Handler> logger) : IPubsubMessageHandler
 {

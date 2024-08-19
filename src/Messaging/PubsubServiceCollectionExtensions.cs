@@ -1,4 +1,4 @@
-namespace Messaging;
+namespace Demo.Messaging;
 
 public static class PubsubServiceCollectionExtensions
 {

@@ -1,5 +1,5 @@
-using MessageHandlers;
-using Messaging;
+using Demo.MessageHandlers;
+using Demo.Messaging;
 
 var builder = WebApplication.CreateBuilder(args);
 
