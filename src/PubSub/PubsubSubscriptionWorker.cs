@@ -1,5 +1,6 @@
 using Google.Api.Gax;
 using Google.Cloud.PubSub.V1;
+using Grpc.Core;
 
 namespace PubSub;
 
@@ -12,7 +13,10 @@ public class PubsubSubscriptionWorker<TMessageHandler>(
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        var subscriptionInterval = TimeSpan.FromSeconds(options.SubscriptionIntervalSeconds);
+        if (options.UseEmulator && options.CreateSubscription)
+        {
+            await CreateSubscriptionAsync(stoppingToken);
+        }
 
         while (true)
         {
@@ -42,7 +46,7 @@ public class PubsubSubscriptionWorker<TMessageHandler>(
 
             if (stoppingToken.IsCancellationRequested) break;
 
-            await Task.Delay(subscriptionInterval, stoppingToken);
+            await Task.Delay(TimeSpan.FromSeconds(options.SubscriptionIntervalSeconds), stoppingToken);
         }
 
         logger.LogInformation("exit subscription worker");
@@ -54,9 +58,9 @@ public class PubsubSubscriptionWorker<TMessageHandler>(
         await base.StopAsync(cancellationToken);
     }
 
-    protected virtual Task<SubscriberClient> CreateSubscriberClientAsync(CancellationToken cancellationToken)
+    private Task<SubscriberClient> CreateSubscriberClientAsync(CancellationToken cancellationToken)
     {
-        if (options.IsEmulator)
+        if (options.UseEmulator)
         {
             return new SubscriberClientBuilder
             {
@@ -79,5 +83,30 @@ public class PubsubSubscriptionWorker<TMessageHandler>(
                 FlowControlSettings = new FlowControlSettings(options.MaxOutstandingElements, options.MaxOutstandingByteCount)
             }
         }.BuildAsync(cancellationToken);
+    }
+
+    private async Task CreateSubscriptionAsync(CancellationToken cancellationToken)
+    {
+        var apiClient = await new SubscriberServiceApiClientBuilder
+        {
+            EmulatorDetection = EmulatorDetection.EmulatorOnly
+        }.BuildAsync(cancellationToken);
+
+        try
+        {
+            var request = new Subscription
+            {
+                TopicAsTopicName = new TopicName(options.Project, options.Topic),
+                SubscriptionName = new SubscriptionName(options.Project, options.Subscription),
+                AckDeadlineSeconds = options.AckDeadlineSeconds,
+                EnableMessageOrdering = options.EnableMessageOrdering
+            };
+
+            await apiClient.CreateSubscriptionAsync(request, cancellationToken);
+        }
+        catch (RpcException e) when (e.Status.StatusCode == StatusCode.AlreadyExists)
+        {
+            logger.LogInformation("subscription already exists");
+        }
     }
 }
