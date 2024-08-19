@@ -13,8 +13,13 @@ public class PubsubSubscriptionWorker<TMessageHandler>(
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
+        logger.LogInformation("start subscription worker: {project}, {topic}, {subscription}", options.Project, options.Topic, options.Subscription);
+
+        if (options.UseEmulator) logger.LogInformation("using pubsub emulator");
+
         if (options.UseEmulator && options.CreateSubscription)
         {
+            logger.LogInformation("create subscription");
             await CreateSubscriptionAsync(stoppingToken);
         }
 
