@@ -1,6 +1,6 @@
-namespace Demo.Messaging;
+namespace Messaging;
 
-public record PubsubSubscriptionOptions<T>(
+public record PubsubSubscriberOptions<T>(
     string Project,
     string Topic,
     string Subscription,

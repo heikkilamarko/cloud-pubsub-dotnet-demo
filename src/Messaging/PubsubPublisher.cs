@@ -1,7 +1,7 @@
 using Google.Api.Gax;
 using Google.Cloud.PubSub.V1;
 
-namespace Demo.Messaging;
+namespace Messaging;
 
 public sealed class PubsubPublisher<T> : IAsyncDisposable
 {

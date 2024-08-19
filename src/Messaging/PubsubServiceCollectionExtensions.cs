@@ -1,13 +1,15 @@
-namespace Demo.Messaging;
+using Microsoft.Extensions.DependencyInjection;
+
+namespace Messaging;
 
 public static class PubsubServiceCollectionExtensions
 {
-    public static void AddPubsubSubscription<TMessageHandler>(this IServiceCollection services, PubsubSubscriptionOptions<TMessageHandler> options)
+    public static void AddPubsubSubscriber<TMessageHandler>(this IServiceCollection services, PubsubSubscriberOptions<TMessageHandler> options)
         where TMessageHandler : class, IPubsubMessageHandler
     {
         services.AddSingleton(options);
         services.AddTransient<TMessageHandler>();
-        services.AddHostedService<PubsubSubscriptionWorker<TMessageHandler>>();
+        services.AddHostedService<PubsubSubscriberWorker<TMessageHandler>>();
     }
 
     public static void AddPubsubPublisher<T>(this IServiceCollection services, PubsubPublisherOptions<T> options)

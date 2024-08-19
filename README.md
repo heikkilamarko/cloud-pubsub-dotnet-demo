@@ -15,9 +15,13 @@ The HTTP requests can be found in `pubsub.http`.
 ## Run the App
 
 ```bash
-cd src
+cd src/App
 dotnet run
 ```
+
+## Send Messages
+
+The HTTP requests can be found in `app.http`.
 
 ## Send Messages with Postman
 
@@ -40,9 +44,17 @@ POST http://0.0.0.0:8085/v1/projects/local/topics/example2:publish
 ### Pre-request Script:
 
 ```js
+const btoa = require("btoa");
+const uuid = require("uuid");
+
 pm.collectionVariables.set(
-    "data_b64",
-    btoa(JSON.stringify({ message: "example" }))
+    "valid_data",
+    btoa(JSON.stringify({ id: uuid.v4(), name: "example" }))
+);
+
+pm.collectionVariables.set(
+    "invalid_data",
+    btoa(JSON.stringify({ id: 123, name: "example" }))
 );
 ```
 
@@ -52,7 +64,10 @@ pm.collectionVariables.set(
 {
     "messages": [
         {
-            "data": "{{data_b64}}"
+            "data": "{{valid_data}}"
+        },
+        {
+            "data": "{{invalid_data}}"
         }
     ]
 }

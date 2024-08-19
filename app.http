@@ -5,7 +5,17 @@ Accept: application/json
 
 ###
 
+POST {{base_url}}/example1?invalid=true
+Accept: application/json
+
+###
+
 POST {{base_url}}/example2
+Accept: application/json
+
+###
+
+POST {{base_url}}/example2?invalid=true
 Accept: application/json
 
 ###

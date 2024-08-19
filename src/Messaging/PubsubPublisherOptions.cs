@@ -1,4 +1,4 @@
-namespace Demo.Messaging;
+namespace Messaging;
 
 public record PubsubPublisherOptions<T>(
     string Project,

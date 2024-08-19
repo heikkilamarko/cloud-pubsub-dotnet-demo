@@ -1,19 +1,22 @@
 using Google.Api.Gax;
 using Google.Cloud.PubSub.V1;
 using Grpc.Core;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
-namespace Demo.Messaging;
+namespace Messaging;
 
-public class PubsubSubscriptionWorker<TMessageHandler>(
-    PubsubSubscriptionOptions<TMessageHandler> options,
+public class PubsubSubscriberWorker<TMessageHandler>(
+    PubsubSubscriberOptions<TMessageHandler> options,
     IServiceScopeFactory serviceScopeFactory,
-    ILogger<PubsubSubscriptionWorker<TMessageHandler>> logger) : BackgroundService where TMessageHandler : class, IPubsubMessageHandler
+    ILogger<PubsubSubscriberWorker<TMessageHandler>> logger) : BackgroundService where TMessageHandler : class, IPubsubMessageHandler
 {
     private SubscriberClient _client;
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        logger.LogInformation("start subscription worker: {project}, {topic}, {subscription}", options.Project, options.Topic, options.Subscription);
+        logger.LogInformation("start subscriber worker: {project}, {topic}, {subscription}", options.Project, options.Topic, options.Subscription);
 
         if (options.UseEmulator) logger.LogInformation("using pubsub emulator");
 
@@ -27,7 +30,7 @@ public class PubsubSubscriptionWorker<TMessageHandler>(
         {
             try
             {
-                logger.LogInformation("start subscription");
+                logger.LogInformation("start subscriber");
 
                 await using (_client = await CreateSubscriberClientAsync(stoppingToken))
                 {
@@ -41,12 +44,12 @@ public class PubsubSubscriptionWorker<TMessageHandler>(
             }
             catch (Exception err)
             {
-                logger.LogError(err, "subscription error");
+                logger.LogError(err, "subscriber error");
             }
             finally
             {
                 _client = null;
-                logger.LogInformation("subscription stopped");
+                logger.LogInformation("subscriber stopped");
             }
 
             if (stoppingToken.IsCancellationRequested) break;
@@ -54,7 +57,7 @@ public class PubsubSubscriptionWorker<TMessageHandler>(
             await Task.Delay(TimeSpan.FromSeconds(options.SubscriptionIntervalSeconds), stoppingToken);
         }
 
-        logger.LogInformation("exit subscription worker");
+        logger.LogInformation("exit subscriber worker");
     }
 
     public override async Task StopAsync(CancellationToken cancellationToken)
