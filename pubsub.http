@@ -1,26 +1,26 @@
-@pubsub_base_url = http://0.0.0.0:8085/v1/projects/local
+@base_url = http://0.0.0.0:8085/v1/projects/local
 
-GET {{pubsub_base_url}}/topics
+GET {{base_url}}/topics
 Accept: application/json
 
 ###
 
-GET {{pubsub_base_url}}/subscriptions
+GET {{base_url}}/subscriptions
 Accept: application/json
 
 ###
 
-PUT {{pubsub_base_url}}/topics/example1
+PUT {{base_url}}/topics/example1
 Accept: application/json
 
 ###
 
-PUT {{pubsub_base_url}}/topics/example2
+PUT {{base_url}}/topics/example2
 Accept: application/json
 
 ###
 
-PUT {{pubsub_base_url}}/subscriptions/example1_sub
+PUT {{base_url}}/subscriptions/example1_sub
 Content-Type: application/json
 Accept: application/json
 
@@ -32,7 +32,7 @@ Accept: application/json
 
 ###
 
-PUT {{pubsub_base_url}}/subscriptions/example2_sub
+PUT {{base_url}}/subscriptions/example2_sub
 Content-Type: application/json
 Accept: application/json
 
@@ -44,22 +44,22 @@ Accept: application/json
 
 ###
 
-DELETE {{pubsub_base_url}}/subscriptions/example1_sub
+DELETE {{base_url}}/subscriptions/example1_sub
 Accept: application/json
 
 ###
 
-DELETE {{pubsub_base_url}}/subscriptions/example2_sub
+DELETE {{base_url}}/subscriptions/example2_sub
 Accept: application/json
 
 ###
 
-DELETE {{pubsub_base_url}}/topics/example1
+DELETE {{base_url}}/topics/example1
 Accept: application/json
 
 ###
 
-DELETE {{pubsub_base_url}}/topics/example2
+DELETE {{base_url}}/topics/example2
 Accept: application/json
 
 ###

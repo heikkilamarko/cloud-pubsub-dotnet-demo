@@ -9,4 +9,10 @@ public static class PubsubServiceCollectionExtensions
         services.AddTransient<TMessageHandler>();
         services.AddHostedService<PubsubSubscriptionWorker<TMessageHandler>>();
     }
+
+    public static void AddPubsubPublisher<T>(this IServiceCollection services, PubsubPublisherOptions<T> options)
+    {
+        services.AddSingleton(options);
+        services.AddSingleton<PubsubPublisher<T>>();
+    }
 }

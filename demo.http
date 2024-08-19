@@ -1,0 +1,11 @@
+@base_url = http://localhost:8000
+
+POST {{base_url}}/example1
+Accept: application/json
+
+###
+
+POST {{base_url}}/example2
+Accept: application/json
+
+###
