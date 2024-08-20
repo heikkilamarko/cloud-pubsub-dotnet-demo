@@ -21,12 +21,14 @@ builder.Services.AddPubsubSubscriber<Example2MessageHandler>(new(
 builder.Services.AddPubsubPublisher<Example1Message>(new(
     Project: "local",
     Topic: "example1",
-    UseEmulator: true));
+    UseEmulator: true,
+    CreateTopic: true));
 
 builder.Services.AddPubsubPublisher<Example2Message>(new(
     Project: "local",
     Topic: "example2",
-    UseEmulator: true));
+    UseEmulator: true,
+    CreateTopic: true));
 
 var app = builder.Build();
 
