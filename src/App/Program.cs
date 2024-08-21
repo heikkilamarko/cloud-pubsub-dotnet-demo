@@ -1,6 +1,5 @@
 using App.Messaging;
 using Messaging;
-using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -32,25 +31,15 @@ builder.Services.AddPubsubPublisher<Example2Message>(new(
 
 var app = builder.Build();
 
-app.MapPost("/example1", async (PubsubPublisher<Example1Message> publisher, [FromQuery] bool? invalid) =>
+app.MapPost("/publish/example1", async (object body, PubsubPublisher<Example1Message> publisher) =>
 {
-    var message = invalid == true
-        ? new { Id = 1 }.ToJsonPubsubMessage()
-        : new Example1Message().ToJsonPubsubMessage();
-
-    await publisher.PublishAsync(message);
-
+    await publisher.PublishAsync(body.ToJsonPubsubMessage());
     return Results.Ok();
 });
 
-app.MapPost("/example2", async (PubsubPublisher<Example2Message> publisher, [FromQuery] bool? invalid) =>
+app.MapPost("/publish/example2", async (object body, PubsubPublisher<Example2Message> publisher) =>
 {
-    var message = invalid == true
-        ? new { Id = 1 }.ToJsonPubsubMessage()
-        : new Example2Message().ToJsonPubsubMessage();
-
-    await publisher.PublishAsync(message);
-
+    await publisher.PublishAsync(body.ToJsonPubsubMessage());
     return Results.Ok();
 });
 

@@ -1,21 +1,53 @@
 @base_url = http://localhost:8000
 
-POST {{base_url}}/example1
+# Valid message to topic "example1"
+
+POST {{base_url}}/publish/example1
+Content-Type: application/json
 Accept: application/json
+
+{
+    "id": "d1c89917-bd24-4223-9e29-5951ab52a235",
+    "name": "example 1"
+}
 
 ###
 
-POST {{base_url}}/example1?invalid=true
+# Invalid message to topic "example1"
+
+POST {{base_url}}/publish/example1
+Content-Type: application/json
 Accept: application/json
+
+{
+    "id": 1,
+    "name": "example 1"
+}
 
 ###
 
-POST {{base_url}}/example2
+# Valid message to topic "example2"
+
+POST {{base_url}}/publish/example2
+Content-Type: application/json
 Accept: application/json
+
+{
+    "id": "d1c89917-bd24-4223-9e29-5951ab52a235",
+    "name": "example 2"
+}
 
 ###
 
-POST {{base_url}}/example2?invalid=true
+# Invalid message to topic "example2"
+
+POST {{base_url}}/publish/example2
+Content-Type: application/json
 Accept: application/json
+
+{
+    "id": 1,
+    "name": "example 2"
+}
 
 ###
