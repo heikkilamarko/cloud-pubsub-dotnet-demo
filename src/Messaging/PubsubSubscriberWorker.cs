@@ -100,6 +100,11 @@ public class PubsubSubscriberWorker<TMessageHandler>(
             EmulatorDetection = EmulatorDetection.EmulatorOnly
         }.BuildAsync(cancellationToken);
 
+        if (options.DeadLetterTopic != null)
+        {
+            await CreateTopicAsync(options.Project, options.DeadLetterTopic, cancellationToken);
+        }
+
         try
         {
             var request = new Subscription
@@ -107,7 +112,12 @@ public class PubsubSubscriberWorker<TMessageHandler>(
                 TopicAsTopicName = new TopicName(options.Project, options.Topic),
                 SubscriptionName = new SubscriptionName(options.Project, options.Subscription),
                 AckDeadlineSeconds = options.AckDeadlineSeconds,
-                EnableMessageOrdering = options.EnableMessageOrdering
+                EnableMessageOrdering = options.EnableMessageOrdering,
+                DeadLetterPolicy = options.DeadLetterTopic != null ? new DeadLetterPolicy
+                {
+                    DeadLetterTopic = new TopicName(options.Project, options.DeadLetterTopic).ToString(),
+                    MaxDeliveryAttempts = options.MaxDeliveryAttempts
+                } : null
             };
 
             await apiClient.CreateSubscriptionAsync(request, cancellationToken);
@@ -115,6 +125,28 @@ public class PubsubSubscriberWorker<TMessageHandler>(
         catch (RpcException e) when (e.Status.StatusCode == StatusCode.AlreadyExists)
         {
             logger.LogInformation("subscription already exists");
+        }
+    }
+
+    private async Task CreateTopicAsync(string project, string topic, CancellationToken cancellationToken)
+    {
+        var apiClient = await new PublisherServiceApiClientBuilder
+        {
+            EmulatorDetection = EmulatorDetection.EmulatorOnly
+        }.BuildAsync(cancellationToken);
+
+        try
+        {
+            var request = new Topic
+            {
+                TopicName = new TopicName(project, topic)
+            };
+
+            await apiClient.CreateTopicAsync(request, cancellationToken);
+        }
+        catch (RpcException e) when (e.Status.StatusCode == StatusCode.AlreadyExists)
+        {
+            logger.LogInformation("topic already exists");
         }
     }
 }

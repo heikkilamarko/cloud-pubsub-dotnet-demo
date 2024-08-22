@@ -15,7 +15,7 @@ public class Example1MessageHandler(ILogger<Example1MessageHandler> logger) : IP
         catch (Exception err)
         {
             logger.LogWarning(err, "[{message_id}] invalid message format. drop or save as dead letter.", message.MessageId);
-            return Task.FromResult(SubscriberClient.Reply.Ack);
+            return Task.FromResult(SubscriberClient.Reply.Nack);
         }
 
         logger.LogInformation("[{message_id}] {id} {name}", message.MessageId, messageData.Id, messageData.Name);
