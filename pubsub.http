@@ -21,16 +21,16 @@ Accept: application/json
 
 ###
 
-# Create topic "example1_dl"
+# Create topic "example2"
 
-PUT {{base_url}}/topics/example1_dl
+PUT {{base_url}}/topics/example2
 Accept: application/json
 
 ###
 
-# Create topic "example2"
+# Create topic "example_dl"
 
-PUT {{base_url}}/topics/example2
+PUT {{base_url}}/topics/example_dl
 Accept: application/json
 
 ###
@@ -46,25 +46,10 @@ Accept: application/json
     "ackDeadlineSeconds": 10,
     "enableMessageOrdering": false,
     "deadLetterPolicy": {
-        "deadLetterTopic": "projects/local/topics/example1_dl",
+        "deadLetterTopic": "projects/local/topics/example_dl",
         "maxDeliveryAttempts": 5
     }
 }
-
-###
-
-# Create subscription "example1_dl_sub" to topic "example1_dl"
-
-PUT {{base_url}}/subscriptions/example1_dl_sub
-Content-Type: application/json
-Accept: application/json
-
-{
-    "topic": "projects/local/topics/example1_dl",
-    "ackDeadlineSeconds": 10,
-    "enableMessageOrdering": false
-}
-
 
 ###
 
@@ -77,14 +62,32 @@ Accept: application/json
 {
     "topic": "projects/local/topics/example2",
     "ackDeadlineSeconds": 10,
+    "enableMessageOrdering": false,
+    "deadLetterPolicy": {
+        "deadLetterTopic": "projects/local/topics/example_dl",
+        "maxDeliveryAttempts": 5
+    }
+}
+
+###
+
+# Create subscription "example_dl_sub" to topic "example_dl"
+
+PUT {{base_url}}/subscriptions/example_dl_sub
+Content-Type: application/json
+Accept: application/json
+
+{
+    "topic": "projects/local/topics/example_dl",
+    "ackDeadlineSeconds": 10,
     "enableMessageOrdering": false
 }
 
 ###
 
-# Pull messages from subscription "example1_dl_sub"
+# Pull messages from subscription "example_dl_sub"
 
-POST {{base_url}}/subscriptions/example1_dl_sub:pull
+POST {{base_url}}/subscriptions/example_dl_sub:pull
 Content-Type: application/json
 Accept: application/json
 
@@ -102,16 +105,16 @@ Accept: application/json
 
 ###
 
-# Delete subscription "example1_dl_sub"
+# Delete subscription "example2_sub"
 
-DELETE {{base_url}}/subscriptions/example1_dl_sub
+DELETE {{base_url}}/subscriptions/example2_sub
 Accept: application/json
 
 ###
 
-# Delete subscription "example2_sub"
+# Delete subscription "example_dl_sub"
 
-DELETE {{base_url}}/subscriptions/example2_sub
+DELETE {{base_url}}/subscriptions/example_dl_sub
 Accept: application/json
 
 ###
@@ -123,16 +126,16 @@ Accept: application/json
 
 ###
 
-# Delete topic "example1_dl"
+# Delete topic "example2"
 
-DELETE {{base_url}}/topics/example1_dl
+DELETE {{base_url}}/topics/example2
 Accept: application/json
 
 ###
 
-# Delete topic "example2"
+# Delete topic "example_dl"
 
-DELETE {{base_url}}/topics/example2
+DELETE {{base_url}}/topics/example_dl
 Accept: application/json
 
 ###

@@ -7,7 +7,7 @@ builder.Services.AddPubsubSubscriber<Example1MessageHandler>(new(
     Project: "local",
     Topic: "example1",
     Subscription: "example1_sub",
-    DeadLetterTopic: "example1_dl",
+    DeadLetterTopic: "example_dl",
     UseEmulator: true,
     CreateSubscription: true));
 
@@ -15,6 +15,7 @@ builder.Services.AddPubsubSubscriber<Example2MessageHandler>(new(
     Project: "local",
     Topic: "example2",
     Subscription: "example2_sub",
+    DeadLetterTopic: "example_dl",
     UseEmulator: true,
     CreateSubscription: true));
 
